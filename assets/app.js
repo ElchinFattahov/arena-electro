@@ -1,3 +1,5 @@
+import { exampleFn } from "./basket.js";
+
 //up
 const upButton = document.querySelector(".up");
 
@@ -164,6 +166,8 @@ window.addEventListener("resize", updateSlideImages);
 
 // SLIDER
 document.addEventListener("DOMContentLoaded", () => {
+  exampleFn();
+
   const track = document.querySelector(".carousel-track");
   const dotsContainer = document.querySelector(".dots");
   const cards = document.querySelectorAll(".product-card");
