@@ -210,11 +210,56 @@
               <i class="bx bx-heart"></i>
               <span class="badge">0</span>
             </div>
-            <div class="icon-with-badge cart">
-              <i class="bx bx-shopping-bag"></i>
-              <span class="badge">0</span>
+            <div class="cart">
+              <div class="icon-with-badge">
+                <i class="bx bx-shopping-bag"></i>
+                <span class="badge">0</span>
+              </div>
+              <span class="cart-total">$0.00</span>
+
+              <div class="basket-container">
+                <template class="basket-empty-template">
+                  <div class="basket-empty">Your cart is empty</div></template
+                >
+                <div class="basket-header">
+                  <h6>My basket</h6>
+                  <i class="bx bx-x"></i>
+                </div>
+
+                <div class="basket-body">
+                  <div class="d-flex align-items-start border-bottom pb-3 mb-3">
+                    <img
+                      src="https://via.placeholder.com/60x60"
+                      class="me-3"
+                      alt="Moova Advance Flex"
+                    />
+                    <div class="flex-grow-1">
+                      <a
+                        href="#"
+                        class="text-decoration-none fw-bold text-primary"
+                        >Moova Advance Flex</a
+                      >
+                      <div class="text-muted">QTY: 1</div>
+                      <div class="fw-semibold mt-1">$490.00</div>
+                    </div>
+                    <a href="#" class="text-decoration-none text-danger ms-3"
+                      >Remove</a
+                    >
+                  </div>
+
+                
+
+                <div class="basker-result d-flex justify-content-between">
+                  <h6>Cart total</h6>
+                  <b>$800.00</b>
+                </div>
+
+                <div class="d-flex column-gap-3 basket-actions">
+                  <button class="btn btn-dark w-100">View cart</button>
+                  <button class="btn btn-warning w-100">Checkout</button>
+                </div>
+              </div>
             </div>
-            <span class="cart-total">$0.00</span>
           </div>
         </nav>
       </div>

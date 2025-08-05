@@ -1,4 +1,4 @@
-import { exampleFn } from "./basket.js";
+import { showEmptyState } from "./basket.js";
 
 //up
 const upButton = document.querySelector(".up");
@@ -166,7 +166,7 @@ window.addEventListener("resize", updateSlideImages);
 
 // SLIDER
 document.addEventListener("DOMContentLoaded", () => {
-  exampleFn();
+  addCartEvents();
 
   const track = document.querySelector(".carousel-track");
   const dotsContainer = document.querySelector(".dots");
@@ -264,3 +264,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   init();
 });
+
+function addCartEvents() {
+  const cartIcon = document.querySelector(".cart");
+  const basketContainer = document.querySelector(".basket-container");
+  cartIcon.addEventListener("click", function () {
+    basketContainer.classList.add("show");
+  });
+
+  basketContainer.addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
+}
