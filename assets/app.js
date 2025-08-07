@@ -1,173 +1,147 @@
-import { showEmptyState } from "./basket.js";
+import { setBasketResult, setupBasketItems } from "./basket.js";
+import { showProducts } from "./product.js";
 
-//up
-const upButton = document.querySelector(".up");
+// === SCROLL TO TOP BUTTON ===
+function setupScrollToTop() {
+  const upButton = document.querySelector(".up");
 
-window.addEventListener("scroll", function () {
-  if (window.scrollY > 400) {
-    upButton.classList.add("show");
-  } else {
-    upButton.classList.remove("show");
-  }
-});
-
-upButton.addEventListener("click", function () {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
+  window.addEventListener("scroll", () => {
+    upButton.classList.toggle("show", window.scrollY > 400);
   });
-});
 
-//DARK-LIGHT MODE
-const lightBtn = document.querySelector(".theme-btn.light");
-const darkBtn = document.querySelector(".theme-btn.dark");
-
-function activateTheme(theme) {
-  if (theme === "light") {
-    document.body.classList.remove("dark-mode");
-    document.body.classList.add("light-mode");
-
-    lightBtn.classList.add("active");
-    darkBtn.classList.remove("active");
-  } else if (theme === "dark") {
-    document.body.classList.remove("light-mode");
-    document.body.classList.add("dark-mode");
-
-    darkBtn.classList.add("active");
-    lightBtn.classList.remove("active");
-  }
-
-  localStorage.setItem("selectedTheme", theme);
+  upButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
 
-lightBtn.addEventListener("click", () => activateTheme("light"));
-darkBtn.addEventListener("click", () => activateTheme("dark"));
+// === THEME SWITCHER ===
+function setupThemeSwitcher() {
+  const lightBtn = document.querySelector(".theme-btn.light");
+  const darkBtn = document.querySelector(".theme-btn.dark");
 
-const savedTheme = localStorage.getItem("selectedTheme");
-if (savedTheme) {
+  const activateTheme = (theme) => {
+    document.body.classList.toggle("dark-mode", theme === "dark");
+    document.body.classList.toggle("light-mode", theme === "light");
+
+    lightBtn.classList.toggle("active", theme === "light");
+    darkBtn.classList.toggle("active", theme === "dark");
+
+    localStorage.setItem("selectedTheme", theme);
+  };
+
+  const savedTheme = localStorage.getItem("selectedTheme") || "light";
   activateTheme(savedTheme);
-} else {
-  activateTheme("light");
+
+  lightBtn.addEventListener("click", () => activateTheme("light"));
+  darkBtn.addEventListener("click", () => activateTheme("dark"));
 }
 
-// scroll
-window.addEventListener("scroll", function () {
+// === HEADER STICKY ON SCROLL ===
+function setupStickyHeader() {
   const headerTop = document.getElementById("headertop");
+  window.addEventListener("scroll", () => {
+    headerTop.classList.toggle("scrolled", window.scrollY > 0);
+  });
+}
 
-  if (window.scrollY > 0) {
-    headerTop.classList.add("scrolled");
-  } else {
-    headerTop.classList.remove("scrolled");
-  }
-});
+// === MOBILE MENU ===
+function setupMobileMenu() {
+  const menuToggle = document.getElementById("menuToggle");
+  const menuClose = document.getElementById("menuClose");
+  const mobileMenu = document.getElementById("mobileMenu");
 
-// MOBILE SCREEN
-const menuToggle = document.getElementById("menuToggle");
-const menuClose = document.getElementById("menuClose");
-const mobileMenu = document.getElementById("mobileMenu");
+  menuToggle.addEventListener("click", () =>
+    mobileMenu.classList.add("active")
+  );
+  menuClose.addEventListener("click", () =>
+    mobileMenu.classList.remove("active")
+  );
 
-menuToggle.addEventListener("click", () => {
-  mobileMenu.classList.add("active");
-});
+  document.querySelectorAll(".has-dropdown").forEach((drop) => {
+    drop.addEventListener("click", () => {
+      const submenu = drop.querySelector(".submenu");
+      if (submenu) {
+        submenu.style.display =
+          submenu.style.display === "block" ? "none" : "block";
+      }
+    });
+  });
+}
 
-menuClose.addEventListener("click", () => {
-  mobileMenu.classList.remove("active");
-});
+// === HERO SLIDER ===
+function setupHeroSlider() {
+  const slider = document.querySelector(".slider");
+  const slides = document.querySelectorAll(".slide");
+  const nextBtn = document.querySelector(".next");
+  const prevBtn = document.querySelector(".prev");
+  let currentIndex = 0;
 
-const dropdowns = document.querySelectorAll(".has-dropdown");
+  const updateSlider = () => {
+    slides.forEach((s) => s.classList.remove("active"));
+    slides[currentIndex].classList.add("active");
+    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    updateButtons();
+  };
 
-dropdowns.forEach((drop) => {
-  drop.addEventListener("click", function () {
-    const submenu = this.querySelector(".submenu");
-    if (submenu) {
-      submenu.style.display =
-        submenu.style.display === "block" ? "none" : "block";
+  const updateButtons = () => {
+    const isFirst = currentIndex === 0;
+    const isLast = currentIndex === slides.length - 1;
+
+    prevBtn.style.pointerEvents = isFirst ? "none" : "auto";
+    prevBtn.style.opacity = isFirst ? "0.5" : "1";
+
+    nextBtn.style.pointerEvents = isLast ? "none" : "auto";
+    nextBtn.style.opacity = isLast ? "0.5" : "1";
+  };
+
+  nextBtn.addEventListener("click", () => {
+    if (currentIndex < slides.length - 1) {
+      currentIndex++;
+      updateSlider();
     }
   });
-});
 
-// COURSEL-BANNER
-const slider = document.querySelector(".slider");
-const slides = document.querySelectorAll(".slide");
-const nextBtn = document.querySelector(".next");
-const prevBtn = document.querySelector(".prev");
-let currentIndex = 0;
-
-function updateSlider() {
-  slides.forEach((slide) => {
-    slide.classList.remove("active");
+  prevBtn.addEventListener("click", () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateSlider();
+    }
   });
 
-  slides[currentIndex].classList.add("active");
+  const updateSlideImages = () => {
+    const mobileSrc =
+      "https://arena-electro.myshopify.com/cdn/shop/files/slide-mobile-h17-1.png?v=1732242325&width=767";
+    const desktopSrc =
+      "https://arena-electro.myshopify.com/cdn/shop/files/slide-h17-1.png?v=1732242188&width=1920";
+    const slideImages = document.querySelectorAll(".slide-content img");
 
-  slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    const isMobile = window.innerWidth <= 992;
+    slideImages.forEach((img) => (img.src = isMobile ? mobileSrc : desktopSrc));
+  };
 
-  updateButtonStates();
+  updateSlider();
+  updateSlideImages();
+
+  window.addEventListener("resize", updateSlideImages);
 }
 
-function updateButtonStates() {
-  if (currentIndex === 0) {
-    prevBtn.style.pointerEvents = "none";
-    prevBtn.style.cursor = "not-allowed";
-    prevBtn.style.opacity = "0.5";
-  } else {
-    prevBtn.style.pointerEvents = "auto";
-    prevBtn.style.cursor = "pointer";
-    prevBtn.style.opacity = "1";
-  }
+// === BASKET TOGGLE ===
+function setupCartToggle() {
+  const cartIcon = document.querySelector(".cart");
+  const basketContainer = document.querySelector(".basket-container");
 
-  if (currentIndex === slides.length - 1) {
-    nextBtn.style.pointerEvents = "none";
-    nextBtn.style.cursor = "not-allowed";
-    nextBtn.style.opacity = "0.5";
-  } else {
-    nextBtn.style.pointerEvents = "auto";
-    nextBtn.style.cursor = "pointer";
-    nextBtn.style.opacity = "1";
-  }
+  cartIcon.addEventListener("click", () => {
+    basketContainer.classList.add("show");
+    basketContainer.style.display = "block";
+  });
+
+  basketContainer.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 }
 
-nextBtn.addEventListener("click", () => {
-  if (currentIndex < slides.length - 1) {
-    currentIndex++;
-    updateSlider();
-  }
-});
-
-prevBtn.addEventListener("click", () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateSlider();
-  }
-});
-
-function updateSlideImages() {
-  const slideImages = document.querySelectorAll(".slide-content img");
-  const mobileSrc =
-    "https://arena-electro.myshopify.com/cdn/shop/files/slide-mobile-h17-1.png?v=1732242325&width=767";
-  const desktopSrc =
-    "https://arena-electro.myshopify.com/cdn/shop/files/slide-h17-1.png?v=1732242188&width=1920";
-
-  if (window.innerWidth <= 992) {
-    slideImages.forEach((img) => {
-      img.src = mobileSrc;
-    });
-  } else {
-    slideImages.forEach((img) => {
-      img.src = desktopSrc;
-    });
-  }
-}
-
-updateSlideImages();
-updateSlider();
-
-window.addEventListener("resize", updateSlideImages);
-
-// SLIDER
-document.addEventListener("DOMContentLoaded", () => {
-  addCartEvents();
-
+// === PRODUCT CAROUSEL ===
+function setupProductCarousel() {
   const track = document.querySelector(".carousel-track");
   const dotsContainer = document.querySelector(".dots");
   const cards = document.querySelectorAll(".product-card");
@@ -178,8 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   const gap = 15;
 
-  function updateSettings() {
+  const updateSettings = () => {
     const width = window.innerWidth;
+
     if (width > 992) {
       slidesToShow = 4;
       slidesToScroll = 1;
@@ -193,50 +168,36 @@ document.addEventListener("DOMContentLoaded", () => {
       slidesToScroll = 2;
       dotCount = 3;
     }
-  }
+  };
 
-  function createDots() {
+  const createDots = () => {
     dotsContainer.innerHTML = "";
     for (let i = 0; i < dotCount; i++) {
       const dot = document.createElement("span");
-      dot.classList.add("dot");
+      dot.className = "dot";
       if (i === 0) dot.classList.add("active");
       dot.dataset.index = i;
       dotsContainer.appendChild(dot);
     }
-  }
+  };
 
-  function moveToIndex(index) {
+  const moveToIndex = (index) => {
     const cardWidth = cards[0].offsetWidth + gap;
-    let offset = 0;
-
-    if (window.innerWidth > 992) {
-      offset = index * slidesToScroll * cardWidth;
-    } else if (window.innerWidth > 576) {
-      offset = index * slidesToScroll * cardWidth;
-    } else {
-      if (index === 0) {
-        offset = 0;
-      } else if (index === 1) {
-        offset = slidesToScroll * cardWidth;
-      } else if (index === 2) {
-        offset = (slidesToScroll + 1) * cardWidth;
-      }
-    }
+    let offset = index * slidesToScroll * cardWidth;
 
     const maxOffset = (cards.length - slidesToShow) * cardWidth;
-    if (offset > maxOffset) offset = maxOffset < 0 ? 0 : maxOffset;
+    if (offset > maxOffset) offset = Math.max(0, maxOffset);
 
     track.style.transform = `translateX(-${offset}px)`;
     currentIndex = index;
     updateActiveDot();
-  }
+  };
 
-  function updateActiveDot() {
-    const dots = document.querySelectorAll(".dot");
+  const updateActiveDot = () => {
+    const dots = dotsContainer.querySelectorAll(".dot");
     dots.forEach((dot) => dot.classList.remove("active"));
-    if (dots[currentIndex]) dots[currentIndex].classList.add("active");
-  }
+    dots[currentIndex]?.classList.add("active");
+  };
 
   dotsContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("dot")) {
@@ -245,16 +206,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function init() {
+  const init = () => {
     updateSettings();
     createDots();
     moveToIndex(0);
-  }
+  };
 
   window.addEventListener("resize", () => {
-    const prevDotCount = dotCount;
+    const prev = dotCount;
     updateSettings();
-    if (prevDotCount !== dotCount) {
+    if (prev !== dotCount) {
       createDots();
       moveToIndex(0);
     } else {
@@ -263,16 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   init();
-});
-
-function addCartEvents() {
-  const cartIcon = document.querySelector(".cart");
-  const basketContainer = document.querySelector(".basket-container");
-  cartIcon.addEventListener("click", function () {
-    basketContainer.classList.add("show");
-  });
-
-  basketContainer.addEventListener("click", function (e) {
-    e.stopPropagation();
-  });
 }
+
+// === INIT ALL ===
+document.addEventListener("DOMContentLoaded", () => {
+  setupScrollToTop();
+  setupThemeSwitcher();
+  setupStickyHeader();
+  setupMobileMenu();
+  setupHeroSlider();
+  setupCartToggle();
+
+  showProducts();
+  setBasketResult();
+  setupBasketItems();
+
+  setupProductCarousel();
+});

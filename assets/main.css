@@ -263,6 +263,8 @@
   border-top: 2px solid #fed700;
   border-radius: 8px;
   min-height: 100px;
+  max-height: 500px;
+  overflow-y: scroll;
   background-color: white;
   transition: 0.15s;
   opacity: 0;
@@ -283,19 +285,30 @@
   justify-content: space-between;
   padding: 4px 0px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
-
-.basker-result {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+.basket-item img {
+  width: 40%;
+}
+.basket-bottom {
+  position: sticky;
+  bottom: 0px;
+  background-color: white;
+}
+.basket-result {
   padding: 16px 0px;
 }
-.basker-result h6 {
+.basket-result h6 {
   font-size: 24px;
   font-weight: 500;
 }
 .basket-actions {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 16px;
+}
+
+.basket.active {
+  background-color: #f2c94c !important;
 }
 
 .icon-with-badge:hover i {
