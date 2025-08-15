@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "image": "https://arena-electro.myshopify.com/cdn/shop/files/electro-product-h17-11.png?v=1732250901&width=540",
+    "title": "Kid's Electric Scooters",
+    "link": "/products/kids-electric-scooters",
+    "price": 450,
+    "category": "Electric Scooters"
+  },
+  {
+    "id": 2,
+    "image": "https://arena-electro.myshopify.com/cdn/shop/files/electro-product-h17-11.png?v=1732250901&width=540",
+    "title": "Moova Advance Flex",
+    "link": "/products/moova-advance-flex",
+    "price": 490,
+    "category": "Electric Scooters"
+  },
+  {
+    "id": 3,
+    "image": "https://arena-electro.myshopify.com/cdn/shop/files/electro-product-h17-11.png?v=1732250901&width=540",
+    "title": "Robin M2 Electric+ IONIC",
+    "link": "/products/robin-m2-electric-ionic",
+    "price": 500,
+    "category": "Electric Scooters"
+  },
+  {
+    "id": 4,
+    "image": "https://arena-electro.myshopify.com/cdn/shop/files/electro-product-h17-11.png?v=1732250901&width=540",
+    "title": "3i Three Wheeler Scooter",
+    "link": "/products/3i-three-wheeler-scooter",
+    "price": 310,
+    "category": "Electric Scooters"
+  },
+  {
+    "id": 5,
+    "image": "https://arena-electro.myshopify.com/cdn/shop/files/electro-product-h17-11.png?v=1732250901&width=540",
+    "title": "Urban Lifestyle Helmet",
+    "link": "/products/urban-lifestyle-helmet",
+    "price": 320,
+    "category": "Accessories"
+  }
+]
